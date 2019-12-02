@@ -1,15 +1,16 @@
 <template>
-    <div class="hello">
-        <p v-for="week in daysArray">
-            <span v-for="day in week">
+    <div class="month">
+        <div class="week" v-for="week in daysArray">
+            <div class="day" v-for="day in week" :class="{'in-this-month': day}">
                 {{day ? day : ''}}
-            </span>
-        </p>
+            </div>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
+    import * as TOOLS from '@/tools';
 
     @Component
     export default class CellCalendar extends Vue {
@@ -23,39 +24,24 @@
         private sundayFirst!: boolean;
 
         private get daysArray(): number[][] {
-            const result: number[][] = [];
-            const days: number[] = [];
-            const firstDay: Date = new Date(`${this.month} 01 ${this.year}`);
-            let offset: number = firstDay.getDay();
-
-            if (!this.sundayFirst) {
-                offset = offset === 0 ? 6 : offset - 1;
-            }
-
-
-            while (offset--) {
-                days.push(0); // TODO: write last month days here
-            }
-
-            while (firstDay.getMonth() === this.month - 1) {
-                days.push(firstDay.getDate());
-                firstDay.setDate(firstDay.getDate() + 1);
-            }
-
-            while (firstDay.getDay() !== (this.sundayFirst ? 0 : 1)) {
-                days.push(0); // TODO: write last month days here
-                firstDay.setDate(firstDay.getDate() + 1);
-            }
-
-            while (days.length) {
-                result.push(days.splice(0, 7));
-            }
-
-            return result;
+            return TOOLS.monthWeeks(this.month, this.year, this.sundayFirst);
         }
     }
 </script>
 
 <style scoped lang="less">
+    .month {
+        .week {
+            display: flex;
 
+            .day {
+                display: inline-block;
+                flex: 20px 1 0;
+
+                &.in-this-month {
+                    border-top: 1px solid #ccc;
+                }
+            }
+        }
+    }
 </style>
