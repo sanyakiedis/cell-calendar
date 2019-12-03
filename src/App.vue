@@ -1,6 +1,10 @@
 <template>
   <div id="app">
     <CellCalendar/>
+    <br>
+    <hr>
+    <br>
+    <CellCalendar sundayFirst/>
   </div>
 </template>
 

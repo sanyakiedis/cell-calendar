@@ -1,8 +1,8 @@
 <template>
-    <div class="month">
-        <div class="week" v-for="week in daysArray">
-            <div class="day" v-for="day in week" :class="{'in-this-month': day}">
-                {{day ? day : ''}}
+    <div class="month" :class="sundayFirst ? 'sunday-first' : 'monday-first'">
+        <div class="week" v-for="week in cellArray">
+            <div class="day" v-for="cell in week" :class="{'other-month': cell.month !== month}">
+                {{cell.day}}
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
         @Prop(Boolean)
         private sundayFirst!: boolean;
 
-        private get daysArray(): number[][] {
+        private get cellArray(): TOOLS.Cell[][] {
             return TOOLS.monthWeeks(this.month, this.year, this.sundayFirst);
         }
     }
@@ -36,12 +36,30 @@
 
             .day {
                 display: inline-block;
+                color: #000;
+                border-top: 1px solid #ccc;
                 flex: 20px 1 0;
+                user-select: none;
 
-                &.in-this-month {
-                    border-top: 1px solid #ccc;
+                &.other-month {
+                    border: none;
+                    opacity: .1;
                 }
             }
         }
+        
+        &.sunday-first {
+            .week .day:first-child,
+            .week .day:last-child {
+                color: #f33;
+            }
+        }
+        
+        &.monday-first {
+            .week .day:last-child,
+            .week .day:nth-last-child(2) {
+                color: #f33;
+            }
+         }
     }
 </style>
