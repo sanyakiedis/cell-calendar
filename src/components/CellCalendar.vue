@@ -3,6 +3,7 @@
         <div class="week" v-for="week in cellArray">
             <div class="day" v-for="cell in week" :class="{'other-month': cell.month !== month}">
                 {{cell.day}}
+                <tracker v-if="cell.month === month" :value="Math.floor(Math.random() * 100)"></tracker>
             </div>
         </div>
     </div>
@@ -11,8 +12,9 @@
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import * as TOOLS from '@/tools';
+    import Tracker from '@/components/Tracker.vue';
 
-    @Component
+    @Component({components: {Tracker}})
     export default class CellCalendar extends Vue {
         @Prop({default: () => new Date().getFullYear()})
         private year!: number;
@@ -39,6 +41,7 @@
                 color: #000;
                 border-top: 1px solid #ccc;
                 flex: 20px 1 0;
+                max-height: 100px;
                 user-select: none;
 
                 &.other-month {
