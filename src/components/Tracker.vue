@@ -52,7 +52,7 @@
     }
 
     .circle {
-        stroke: red;
+        stroke: #ef4747;
         transition: 0.35s stroke-dashoffset;
         transform: rotate(-90deg);
         transform-origin: 50% 50%;
